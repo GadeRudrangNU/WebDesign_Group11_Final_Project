@@ -5,6 +5,7 @@ import Login   from './pages/login';
 import Home    from './components/Home';
 import Profile from './pages/profile';
 import CoordinatorDashboard from './pages/CoordinatorDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 // …import any other role‑based pages here…
 
 export default function App() {
