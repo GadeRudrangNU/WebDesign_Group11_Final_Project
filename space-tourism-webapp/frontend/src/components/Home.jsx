@@ -72,6 +72,12 @@ export default function Home() {
               <li className="nav-item">
                 <a className="nav-link" href="#hero">Home</a>
               </li>
+              {/* ——— Trips page ——— */}
++            <li className="nav-item">
++              <Link className="nav-link" to="/trips">
++                Trips
++              </Link>
++            </li>
               <li className="nav-item">
                 <a className="nav-link" href="#mission">Mission</a>
               </li>
