@@ -1,6 +1,5 @@
 // backend/models/Trip.js
 const mongoose = require('mongoose');
-
 const tripSchema = new mongoose.Schema({
   name:           { type: String, required: true },
   slug:           { type: String, required: true, unique: true },
@@ -15,4 +14,8 @@ const tripSchema = new mongoose.Schema({
   createdAt:      { type: Date, default: Date.now }
 });
 
+
 module.exports = mongoose.model('Trip', tripSchema);
+ 
+module.exports = mongoose.model('Trip', tripSchema);
+

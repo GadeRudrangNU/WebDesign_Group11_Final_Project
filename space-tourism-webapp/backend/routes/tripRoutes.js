@@ -4,7 +4,11 @@ const router  = express.Router();
 const Trip    = require('../models/Trip');
 const Booking = require('../models/Booking');
 const { protect, isAdmin } = require('../middlewares/authMiddleware');
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 1ac4c4de8f6e2a9cd938ba9f1e21e10fbff630ae
 // 1) CREATE a trip (protected; admin only)
 router.post(
   '/',
@@ -23,20 +27,32 @@ router.post(
     }
   }
 );
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 1ac4c4de8f6e2a9cd938ba9f1e21e10fbff630ae
 // 2) LIST all trips
 router.get('/', async (req, res) => {
   const trips = await Trip.find();
   res.json(trips);
 });
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 1ac4c4de8f6e2a9cd938ba9f1e21e10fbff630ae
 // 3) GET one trip by slug
 router.get('/:slug', async (req, res) => {
   const trip = await Trip.findOne({ slug: req.params.slug });
   if (!trip) return res.status(404).json({ message: 'Not found' });
   res.json(trip);
 });
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 1ac4c4de8f6e2a9cd938ba9f1e21e10fbff630ae
 // 4) BOOK a trip
 router.post(
   '/book',
@@ -47,12 +63,17 @@ router.post(
     if (!trip) return res.status(404).json({ message: 'Trip not found' });
     if (trip.seatsAvailable < passengers)
       return res.status(400).json({ message: 'Not enough seats' });
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 1ac4c4de8f6e2a9cd938ba9f1e21e10fbff630ae
     const booking = await Booking.create({
       user: req.user.id,
       trip: tripId,
       passengers
     });
+<<<<<<< HEAD
 
     trip.seatsAvailable -= passengers;
     await trip.save();
@@ -62,3 +83,14 @@ router.post(
 );
 
 module.exports = router;
+=======
+ 
+    trip.seatsAvailable -= passengers;
+    await trip.save();
+ 
+    res.status(201).json(booking);
+  }
+);
+ 
+module.exports = router;
+>>>>>>> 1ac4c4de8f6e2a9cd938ba9f1e21e10fbff630ae

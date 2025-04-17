@@ -5,21 +5,21 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import '../styles/Home.css';
-
-
+ 
+ 
 import starsBg      from '../assets/stars.png';
 import moonSurface  from '../assets/moon1.png';
 import astronautImg from '../assets/astronaut.png';
-
+ 
 gsap.registerPlugin(ScrollTrigger);
-
+ 
 export default function Home() {
   const navigate = useNavigate();
   const heroRef  = useRef(null);
   const moonRef  = useRef(null);
   const astroRef = useRef(null);
   const textRef  = useRef(null);
-
+ 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
     const hero = heroRef.current;
@@ -32,24 +32,24 @@ export default function Home() {
         pin:      true,
       }
     });
-
+ 
     tl
       .fromTo(moonRef.current,  { y:  200 }, { y:   0, ease: 'none' }, 0)
       .fromTo(astroRef.current, { y: -70 },  { y: 100, ease: 'none' }, 0)
       .fromTo(textRef.current,  { autoAlpha: 0, y:20 }, { autoAlpha: 1, y:0, ease: 'none' }, 0);
-
+ 
     return () => {
       ScrollTrigger.getAll().forEach(st => st.kill());
       tl.kill();
     };
   }, []);
-
+ 
   const handleLogout = () => {
     // clear any auth state you have
     localStorage.removeItem('token');
     navigate('/login', { replace: true });
   };
-
+ 
   return (
     <div className="home-root">
       {/* ─── NAVBAR ───────────────────────────────────────────────────────────── */}
@@ -72,6 +72,12 @@ export default function Home() {
               <li className="nav-item">
                 <a className="nav-link" href="#hero">Home</a>
               </li>
+              {/* ——— Trips page ——— */}
++            <li className="nav-item">
++              <Link className="nav-link" to="/trips">
++                Trips
++              </Link>
++            </li>
               <li className="nav-item">
                 <a className="nav-link" href="#mission">Mission</a>
               </li>
@@ -93,7 +99,7 @@ export default function Home() {
           </div>
         </div>
       </nav>
-
+ 
       {/* Add top padding so content isn’t hidden under fixed navbar */}
       <div style={{ paddingTop: '70px' }}>
         {/* ─── HERO ───────────────────────────────────────────────────────────── */}
@@ -125,8 +131,8 @@ export default function Home() {
             Welcome To Your Space Journey!
           </h1>
         </section>
-        
-
+       
+ 
         {/* ─── MISSION ────────────────────────────────────────────────────────── */}
         <section id="mission" data-aos="fade-up">
           <div className="video-background">
@@ -142,7 +148,7 @@ export default function Home() {
             </p>
           </div>
         </section>
-
+ 
         {/* ─── GALLERY ────────────────────────────────────────────────────────── */}
         <section id="carousel-section" data-aos="fade-up">
           <div
@@ -186,7 +192,7 @@ export default function Home() {
             </button>
           </div>
         </section>
-
+ 
         {/* ─── CONTACT ────────────────────────────────────────────────────────── */}
         <section id="contact" data-aos="fade-up">
           <div className="contact-wrapper">
@@ -199,7 +205,7 @@ export default function Home() {
             </form>
           </div>
         </section>
-
+ 
         {/* ─── FILLER ─────────────────────────────────────────────────────────── */}
         <section className="filler-section" data-aos="fade-up">
           <h2>Beyond Earth</h2>
@@ -209,7 +215,7 @@ export default function Home() {
           <h2>Space Gear</h2>
           <p>Shop astronaut‑approved travel gear, zero‑gravity snacks, and intergalactic souvenirs from our onboard store.</p>
         </section>
-
+ 
         {/* ─── FOOTER ────────────────────────────────────────────────────────── */}
         <footer data-aos="fade-up">
           <p>© 2025 Space Tourism. All rights reserved.</p>
