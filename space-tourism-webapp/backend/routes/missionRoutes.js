@@ -2,20 +2,51 @@ const express = require('express');
 const router = express.Router();
 const missionController = require('../controllers/missionController');
 const authMiddleware = require('../middlewares/authMiddleware');
+const { protect } = require('../middlewares/authMiddleware');
 
-// Get all missions (for Trip Coordinator)
-router.get('/', authMiddleware, missionController.getAllMissions);
+function isCoordinatorOrAdmin(req, res, next) {
+  if (
+    req.user &&
+    (req.user.role === 'TripCoordinator' || req.user.role === 'Admin')
+  ) {
+    return next();
+  }
+  return res.status(403).json({ message: 'Coordinators or Admins only' });
+}
 
-// Create a new mission (can be used by Admin or Coordinator)
-router.post('/', authMiddleware, missionController.createMission);
+router.get(
+  '/', 
+  protect, 
+  isCoordinatorOrAdmin,
+  missionController.getAllMissions
+);
 
-// Update mission status (Scheduled, Delayed, Completed)
-router.put('/:id/status', authMiddleware, missionController.updateMissionStatus);
+router.post(
+  '/', 
+  protect, 
+  isCoordinatorOrAdmin,
+  missionController.createMission
+);
 
-// Assign a guide to mission
-router.put('/:id/assign-guide', authMiddleware, missionController.assignGuideToMission);
+router.put(
+  '/:id/status',
+  protect,
+  isCoordinatorOrAdmin,
+  missionController.updateMissionStatus
+);
 
-// Update seat capacity
-router.put('/:id/seats', authMiddleware, missionController.updateSeatCapacity);
+router.put(
+  '/:id/assign-guide',
+  protect,
+  isCoordinatorOrAdmin,
+  missionController.assignGuideToMission
+);
+
+router.put(
+  '/:id/seats',
+  protect,
+  isCoordinatorOrAdmin,
+  missionController.updateSeatCapacity
+);
 
 module.exports = router;
