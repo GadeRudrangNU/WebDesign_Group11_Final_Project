@@ -1,0 +1,183 @@
+/* frontend/src/styles/login.css */
+
+/* 1) Root: scope everything under .login-root */
+.login-root {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1c1c1c 0%, #0c0c2c 100%);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+
+/* 2) Centered form container */
+.login-root .login-box {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* 3) Background elements */
+.login-root .space-objects {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+}
+.login-root .space-objects div {
+    position: absolute;
+    border-radius: 50%;
+}
+
+/* Planet */
+.login-root .planet {
+    width: 50px; height: 50px;
+    background: linear-gradient(to right, #336699, #6699CC);
+    animation: orbitPlanet 50s linear infinite, rotatePlanet 10s linear infinite;
+}
+
+/* Moon */
+.login-root .moon {
+    width: 20px; height: 20px;
+    background: radial-gradient(circle, #888, #444);
+    animation: driftMoon 30s linear infinite alternate-reverse,
+               rotateMoon 15s linear infinite alternate-reverse;
+}
+
+/* Comet */
+.login-root .comet {
+    width: 2px; height: 2px;
+    background: linear-gradient(to right, rgba(255,255,255,0), white);
+    animation: cometTailGlow 5s linear infinite alternate-reverse,
+               moveCometTrail 10s linear infinite ease-in-out;
+}
+
+/* Spaceship */
+.login-root .spaceship {
+    font-size: 40px;
+    animation: flySpaceship 20s linear infinite alternate-reverse;
+}
+
+/* Rocket on login success */
+.login-root #launch-rocket {
+    position: absolute;
+    bottom: -50px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px;
+    transition: bottom 2s ease-in;
+    z-index: 3;
+}
+
+/* Stars */
+.login-root .stars {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;  /* above planets but below form */
+}
+.login-root .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out;
+}
+
+/* 4) Form styles */
+.login-root form {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+.login-root .form-control {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    margin-bottom: 15px;
+}
+.login-root .form-control::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+/* 4.1) Input‑group & Show button alignment */
+.login-root .input-group {
+    display: flex;
+    align-items: center;
+}
+.login-root .input-group .form-control {
+    flex: 1;
+    margin: 0;
+}
+.login-root .input-group .btn {
+    flex-shrink: 0;
+    margin-left: 4px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    border-color: rgba(255,255,255,0.3);
+}
+
+/* Primary button */
+.login-root .btn-primary {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #007bff;
+    border: none;
+    transition: all 0.3s;
+}
+.login-root .btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,123,255,0.3);
+}
+
+/* Feedback & links */
+.login-root .feedback {
+    margin-top: 10px;
+    color: #ffcc00;
+}
+.login-root .form-text {
+    margin-top: 20px;
+    color: #aaa;
+}
+.login-root .form-text a {
+    color: #007bff;
+}
+.login-root .form-text a:hover {
+    text-decoration: underline;
+}
+
+/* 5) Keyframes scoped here */
+@keyframes twinkle        { 0%,100%{opacity:0;}50%{opacity:1;} }
+@keyframes orbitPlanet    { 0%{transform:translateX(-50px) rotate(0deg);}100%{transform:translateX(50px) rotate(360deg);} }
+@keyframes rotatePlanet   { 0%{transform:rotate(0deg);}100%{transform:rotate(360deg);} }
+@keyframes driftMoon      { 0%{transform:translate(0,0);}100%{transform:translate(30px,30px);} }
+@keyframes rotateMoon     { 0%{transform:rotate(0deg);}100%{transform:rotate(360deg);} }
+@keyframes cometTailGlow  { 0%{box-shadow:0 0 5px #fff;}100%{box-shadow:0 0 20px #fff,0 0 40px #ff00de;} }
+@keyframes moveCometTrail { 0%{transform:translate(-100px,0);}100%{transform:translate(100px,100px);} }
+@keyframes flySpaceship {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(calc(100vw + 100px)); }
+  }
+@keyframes flyRocket      { 0%{transform:translateY(100vh) rotate(45deg);}100%{transform:translateY(-100vh) rotate(45deg);} }
