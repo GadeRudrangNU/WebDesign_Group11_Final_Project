@@ -6,6 +6,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import '../styles/Home.css';
 
+
 import starsBg      from '../assets/stars.png';
 import moonSurface  from '../assets/moon1.png';
 import astronautImg from '../assets/astronaut.png';
@@ -124,6 +125,7 @@ export default function Home() {
             Welcome To Your Space Journey!
           </h1>
         </section>
+        
 
         {/* ─── MISSION ────────────────────────────────────────────────────────── */}
         <section id="mission" data-aos="fade-up">
