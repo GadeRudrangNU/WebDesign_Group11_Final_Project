@@ -1,13 +1,4 @@
 // backend/routes/userRoutes.js
-<<<<<<< HEAD
-
-const express = require('express');
-const router  = express.Router();
-
-// Require exactly the file and export names:
-const { protect } = require('../middlewares/authMiddleware'); 
-
-=======
  
 const express = require('express');
 const router  = express.Router();
@@ -15,7 +6,7 @@ const router  = express.Router();
 // Require exactly the file and export names:
 const { protect } = require('../middlewares/authMiddleware');
  
->>>>>>> 1ac4c4de8f6e2a9cd938ba9f1e21e10fbff630ae
+
 // Protected profile endpoint
 router.get(
   '/profile',
@@ -27,10 +18,7 @@ router.get(
     });
   }
 );
-<<<<<<< HEAD
 
-module.exports = router;
-=======
  
 module.exports = router;
->>>>>>> 1ac4c4de8f6e2a9cd938ba9f1e21e10fbff630ae
+

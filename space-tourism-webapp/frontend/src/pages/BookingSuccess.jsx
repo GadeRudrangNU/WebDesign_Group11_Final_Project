@@ -1,16 +1,24 @@
 import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import Confetti from 'react-confetti';
+import { useWindowSize } from 'react-use';
 
 export default function BookingSuccess() {
   const navigate = useNavigate();
+  const { width, height } = useWindowSize();
 
   return (
     <Container className="text-center my-5">
-      <h2>Booking Successful 🎉</h2>
-      <p>Your trip has been booked successfully!</p>
-      <Button variant="success" onClick={() => navigate('/')}>
-        Go Back to Home
+      <Confetti width={width} height={height} />
+      <h2 className="mb-4">🎉 Booking Confirmed!</h2>
+      <p>Thank you for booking with Space Tourism! Your adventure awaits 🚀</p>
+      <Button
+        variant="success"
+        className="mt-4"
+        onClick={() => navigate('/trips')}
+      >
+        Back to Trips
       </Button>
     </Container>
   );

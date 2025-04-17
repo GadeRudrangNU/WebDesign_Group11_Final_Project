@@ -1,74 +1,49 @@
 // frontend/src/components/TripDetail.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchTrip } from '../services/apiService';
-import { Carousel, Button, Form } from 'react-bootstrap';
+import { fetchTrip } from '../services/apiService'; // Assuming you already have this function
+import { Button, Container } from 'react-bootstrap'; // If you are using Bootstrap
 
 export default function TripDetail() {
-  const { slug } = useParams();
-  const navigate = useNavigate();
-  const [trip, setTrip] = useState(null);
-  const [passengers, setPassengers] = useState(1);
+  const { slug } = useParams();             // Get trip slug from URL
+  const navigate = useNavigate();            // To navigate programmatically
+  const [trip, setTrip] = useState(null);     // Trip data state
 
   useEffect(() => {
-    fetchTrip(slug)
-      .then(data => setTrip(data))
-      .catch(console.error);
+    const getTripDetails = async () => {
+      try {
+        const data = await fetchTrip(slug);
+        setTrip(data);
+      } catch (error) {
+        console.error('Failed to fetch trip details:', error);
+      }
+    };
+
+    getTripDetails();
   }, [slug]);
 
-  if (!trip) return <p>Loading…</p>;
-
-  const handleBooking = () => {
-    navigate('/payment', { state: { tripId: trip._id, passengers } });
+  const handleBooking = async () => {
+    try {
+      // Instead of direct booking, redirect to payment page
+      navigate(`/payment/${trip._id}`, { state: { passengers: 1 } }); // Example: you can pass passengers if needed
+    } catch (err) {
+      console.error(err);
+      alert('Failed to proceed to booking!');
+    }
   };
 
+  if (!trip) {
+    return <div>Loading trip details...</div>;
+  }
+
   return (
-    <div className="container my-5">
+    <Container className="my-5">
       <h2>{trip.name}</h2>
-      <p className="text-muted">{trip.location}</p>
-
-      <Carousel>
-        {trip.images.map((img, i) => (
-          <Carousel.Item key={i}>
-            <img
-              className="d-block w-100"
-              src={img}
-              alt={`slide ${i}`}
-              style={{ height: '400px', objectFit: 'cover' }}
-            />
-          </Carousel.Item>
-        ))}
-      </Carousel>
-
-      <div className="mt-4">
-        <p>{trip.description}</p>
-        <ul>
-          <li><strong>Cost:</strong> ${trip.cost}</li>
-          <li><strong>Distance:</strong> {trip.distance} million km</li>
-          <li><strong>Duration:</strong> {trip.durationDays} days</li>
-          <li><strong>Seats left:</strong> {trip.seatsAvailable}</li>
-        </ul>
-
-        {/* Passenger Selection */}
-        <Form.Group className="my-3" style={{ maxWidth: '200px' }}>
-          <Form.Label>Number of Passengers</Form.Label>
-          <Form.Control
-            type="number"
-            min="1"
-            max={trip.seatsAvailable}
-            value={passengers}
-            onChange={e => setPassengers(+e.target.value)}
-          />
-        </Form.Group>
-
-        {/* Book Now Button */}
-        <Button
-          onClick={handleBooking}
-          disabled={trip.seatsAvailable < 1}
-        >
-          Book Now
-        </Button>
-      </div>
-    </div>
+      <p>{trip.description}</p>
+      <p><strong>Price:</strong> ${trip.price}</p>
+      <Button onClick={handleBooking} variant="primary">
+        Book Now
+      </Button>
+    </Container>
   );
 }

@@ -1,94 +1,61 @@
 // frontend/src/pages/PaymentPage.jsx
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { bookTrip } from '../services/apiService';
-import { Container, Form, Button, Card } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
+import { Container, Spinner } from 'react-bootstrap';
+
+// Initialize Stripe with your publishable key
+const stripePromise = loadStripe('pk_test_51REzodCzKwvVDtvZ68k61q30anblUYUgVOysfj5jcqvqlykrlXwJpFflEQYb5YyLegGbNIVKfTS2Z6EGDGUH1wdc00MXBmW6jo'); // <-- Replace with your Stripe publishable key
 
 export default function PaymentPage() {
+  const { tripId } = useParams();  // Get tripId from URL
   const navigate = useNavigate();
-  const location = useLocation();
-  const { tripId, passengers } = location.state;
 
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiry, setExpiry] = useState('');
-  const [cvc, setCVC] = useState('');
-  const [name, setName] = useState('');
+  useEffect(() => {
+    const initiatePayment = async () => {
+      try {
+        const stripe = await stripePromise;
 
-  const handlePayment = async (e) => {
-    e.preventDefault();
-    try {
-      // Mock validation
-      if (cardNumber.length === 16 && expiry && cvc.length === 3 && name) {
-        await bookTrip(tripId, passengers);
-        navigate('/booking-success');
-      } else {
-        alert('Please fill all details correctly');
+        // Create a Checkout Session on backend
+        const response = await fetch('https://b270-155-33-134-68.ngrok-free.app/api/payment/create-checkout-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            tripId: tripId,
+            amount: 50, // Example: $50 trip price (you can make this dynamic later)
+          }),
+        });
+
+        const session = await response.json();
+
+        // Redirect user to Stripe Checkout
+        const result = await stripe.redirectToCheckout({
+          sessionId: session.id,
+        });
+
+        if (result.error) {
+          console.error(result.error.message);
+          alert('Payment redirect failed. Try again.');
+          navigate('/home');
+        }
+      } catch (error) {
+        console.error('Payment error:', error);
+        alert('Payment Failed. Please try again.');
+        navigate('/home');
       }
-    } catch (error) {
-      console.error(error);
-      alert('Payment Failed');
-    }
-  };
+    };
+
+    initiatePayment();
+  }, [tripId, navigate]);
 
   return (
-    <Container className="my-5 d-flex justify-content-center">
-      <Card style={{ width: '400px', padding: '20px', borderRadius: '15px', boxShadow: '0 4px 8px rgba(0,0,0,0.2)' }}>
-        <h3 className="text-center mb-4">Payment Information</h3>
-        <Form onSubmit={handlePayment}>
-          <Form.Group className="mb-3">
-            <Form.Label>Cardholder Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="John Doe"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Card Number</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="1234 5678 9012 3456"
-              maxLength="16"
-              value={cardNumber}
-              onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, ''))}
-              required
-            />
-          </Form.Group>
-
-          <div className="d-flex gap-2">
-            <Form.Group className="mb-3 flex-grow-1">
-              <Form.Label>Expiry</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="MM/YY"
-                maxLength="5"
-                value={expiry}
-                onChange={(e) => setExpiry(e.target.value)}
-                required
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" style={{ width: '100px' }}>
-              <Form.Label>CVC</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="123"
-                maxLength="3"
-                value={cvc}
-                onChange={(e) => setCVC(e.target.value.replace(/\D/g, ''))}
-                required
-              />
-            </Form.Group>
-          </div>
-
-          <Button variant="primary" type="submit" className="w-100 mt-3">
-            Pay & Book Trip
-          </Button>
-        </Form>
-      </Card>
+    <Container className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
+      <div className="text-center">
+        <Spinner animation="border" variant="primary" />
+        <h4 className="mt-3">Redirecting to Secure Payment...</h4>
+      </div>
     </Container>
   );
 }
