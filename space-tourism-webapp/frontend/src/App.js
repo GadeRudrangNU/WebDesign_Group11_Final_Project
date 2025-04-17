@@ -55,7 +55,6 @@ export default function App() {
       />
       {/* e.g. <Route path="/admin" element={<Admin />} /> */}
       <Route path="*"        element={<Navigate to="/login" replace />} />
-      <Route path="/coordinator" element={<ProtectedRoute allowedRoles={['TripCoordinator']}><CoordinatorDashboard /></ProtectedRoute>} />
     </Routes>
   );
 }
