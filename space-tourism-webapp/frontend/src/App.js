@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Login   from './pages/login';
 import Home    from './components/Home';
 import Profile from './pages/profile';
+import CoordinatorDashboard from './pages/CoordinatorDashboard';
 import TripList    from './components/TripList'
   import TripDetail  from './components/TripDetail'
   import ProtectedRoute from './components/ProtectedRoute';
@@ -22,6 +23,16 @@ export default function App() {
         element={
           <ProtectedRoute allowedRoles={['Traveler']}>
             <Home />
+          </ProtectedRoute>
+        }
+      />
+      {/* Coordinator Dashboard (TripCoordinators only) */}
+      
+      <Route
+        path="/coordinator"
+        element={
+          <ProtectedRoute allowedRoles={['TripCoordinator']}>
+            <CoordinatorDashboard />
           </ProtectedRoute>
         }
       />

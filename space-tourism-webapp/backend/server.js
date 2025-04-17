@@ -16,6 +16,7 @@ app.use('/api/auth',     require('./routes/authRoutes'));
 app.use('/api/missions', require('./routes/missionRoutes'));
 app.use('/api/users',    require('./routes/userRoutes'));
 app.use('/api/trips', require('./routes/tripRoutes'));
+
 // new trip & booking routes
 // if you wrote tripRoutes.js with ES modules, either convert to commonjs:
 //    const tripRoutes = require('./routes/tripRoutes');
