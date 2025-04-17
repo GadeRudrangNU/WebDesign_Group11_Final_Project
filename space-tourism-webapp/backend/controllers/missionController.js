@@ -4,8 +4,30 @@ const User = require('../models/User');
 // 1. Create a new mission
 exports.createMission = async (req, res) => {
   try {
-    const { title, destination, launchDate, seatCapacity } = req.body;
-    const newMission = new Mission({ title, destination, launchDate, seatCapacity });
+    const {
+      title,
+      destination,
+      launchDate,
+      seatCapacity,
+      coordinatorId,
+      travellerId,
+      guideId,
+      startDate,
+      endDate
+    } = req.body;
+
+    const newMission = new Mission({
+      title,
+      destination,
+      launchDate,
+      seatCapacity,
+      coordinatorId,
+      travellerId,
+      guideId,
+      startDate,
+      endDate
+    });
+
     await newMission.save();
     res.status(201).json({ message: 'Mission created successfully', mission: newMission });
   } catch (error) {
@@ -17,7 +39,12 @@ exports.createMission = async (req, res) => {
 // 2. Get all missions
 exports.getAllMissions = async (req, res) => {
   try {
-    const missions = await Mission.find().populate('assignedGuide', 'username email');
+    const missions = await Mission.find()
+      .populate('assignedGuide', 'username email')
+      .populate('travellerId', 'username email')
+      .populate('guideId', 'username email')
+      .populate('coordinatorId', 'username email');
+
     res.json(missions);
   } catch (error) {
     console.error('Get missions error:', error);

@@ -1,23 +1,26 @@
 // src/App.js
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Login   from './pages/login';
-import Home    from './components/Home';
+
+import Login from './pages/login';
+import Home from './components/Home';
 import Profile from './pages/profile';
 import CoordinatorDashboard from './pages/CoordinatorDashboard';
+import GuideDashboard from './pages/guideDashboard';
+import TripList from './components/TripList';
+import TripDetail from './components/TripDetail';
+import Unauthorized from './pages/Unauthorized';
 import ProtectedRoute from './components/ProtectedRoute';
-import TripList    from './components/TripList'
-import TripDetail  from './components/TripDetail'
-import Unauthorized    from './pages/Unauthorized';
-// …import any other role‑based pages here…
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/"        element={<Navigate to="/login" replace />} />
-      <Route path="/login"   element={<Login />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
+
+      {/* Traveler Home */}
       <Route
         path="/home"
         element={
@@ -26,8 +29,8 @@ export default function App() {
           </ProtectedRoute>
         }
       />
-      {/* Coordinator Dashboard (TripCoordinators only) */}
-      
+
+      {/* Coordinator Dashboard */}
       <Route
         path="/coordinator"
         element={
@@ -36,7 +39,18 @@ export default function App() {
           </ProtectedRoute>
         }
       />
-      {/* only logged‑in Travelers */}
+
+      {/* Certified Space Guide Dashboard */}
+      <Route
+        path="/guide"
+        element={
+          <ProtectedRoute allowedRoles={['CertifiedSpaceGuide']}>
+            <GuideDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Traveler Trips */}
       <Route
         path="/trips"
         element={
@@ -53,8 +67,9 @@ export default function App() {
           </ProtectedRoute>
         }
       />
-      {/* e.g. <Route path="/admin" element={<Admin />} /> */}
-      <Route path="*"        element={<Navigate to="/login" replace />} />
+
+      {/* Catch-all */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }
