@@ -1,0 +1,190 @@
+/* 1) RESET any flex‑centering from login.css */
+html, body {
+    /* undo your login.css */
+    display: block !important;
+    align-items: normal !important;
+    justify-content: normal !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    margin: 0;
+    padding: 0;
+  }
+.home-root {
+    display: block;
+  }
+  
+  /* Allow vertical scrolling */
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #000;
+    font-family: Arial, sans-serif;
+  }
+  /* ─── NAVBAR OVERRIDES ────────────────────────────────────────────────────── */
+.navbar-custom {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 0.5rem 1rem;
+  }
+  .navbar-custom .navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #ffcc00;
+  }
+  .navbar-custom .nav-link {
+    color: #fff;
+    margin-right: 1rem;
+  }
+  .navbar-custom .nav-link:hover {
+    color: #ffcc00;
+  }
+  .navbar-custom .btn-outline-light {
+    color: #fff;
+    border-color: #fff;
+  }
+  .navbar-custom .btn-outline-light:hover {
+    background-color: #fff;
+    color: #000;
+  }
+  /* HERO (pin & scrub) */
+  #hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #000 url('../assets/stars.png') no-repeat center/cover;
+  }
+  .object {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  /* Moon: exactly 2500×750, resting bottom:10% */
+  #moon {
+    width: 2500px;
+    height: 750px;
+    bottom: 10%;
+    filter: drop-shadow(0 0 30px #fff);
+  }
+  /* Astronaut: 15vw max 300px, starting up near top:25% */
+  #astronaut {
+    width: 15vw;
+    max-width: 300px;
+    top: 25%;
+  }
+  /* Welcome text, hidden at first */
+  #welcomeText {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 5rem;
+    color: #ffcc00;
+    text-shadow: 0 0 10px #fff, 0 0 20px #ffcc00;
+    opacity: 0;
+    transition: opacity 0.1s, transform 0.1s;
+    white-space: nowrap;
+  }
+  
+  /* MISSION */
+  #mission {
+    position: relative;
+    min-height: 100vh;
+    padding: 100px 20px;
+    background: #000;
+    color: #fff;
+    text-align: center;
+  }
+  #mission .video-background {
+    position: absolute; inset: 0; z-index: -1; overflow: hidden;
+  }
+  #mission .video-background video {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .mission-content {
+    position: relative; z-index: 1;
+    max-width: 800px; margin: 0 auto;
+  }
+  .mission-heading {
+    font-size: 2.5rem;
+    background: linear-gradient(90deg, #ff0066, #ffcc00, #33ccff);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradientAnimation 3s ease infinite;
+  }
+  @keyframes gradientAnimation {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* CAROUSEL */
+  #carousel-section {
+    min-height: 100vh;
+    padding: 100px 0;
+    background: #000;
+  }
+  .carousel-item img {
+    width: 100%;
+    height: 60vh;
+    object-fit: cover;
+  }
+  .carousel-caption h5 { color: cyan; }
+  .carousel-caption p  { color: white; }
+  
+  /* CONTACT */
+  #contact {
+    padding: 80px 20px;
+    background: #111;
+    color: #fff;
+    text-align: center;
+  }
+  .contact-wrapper {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .contact-form .form-control {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: none;
+    margin-bottom: 1rem;
+  }
+  .contact-form .btn-primary {
+    background: #00ffff;
+    color: #000;
+  }
+  
+  /* FILLERS */
+  .filler-section,
+  .filler-section.alt {
+    min-height: 100vh;
+    padding: 4rem;
+    color: #fff;
+    text-align: center;
+  }
+  .filler-section       { background: #111; }
+  .filler-section.alt   { background: #222; }
+  
+  /* FOOTER */
+  footer {
+    background: #000;
+    color: #666;
+    padding: 2rem 0;
+    text-align: center;
+  }
+  
+  /* AOS fade‑up helper */
+  [data-aos] {
+    opacity: 0;
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  [data-aos].aos-animate {
+    opacity: 1;
+    transform: translate(0,0);
+  }
+  [data-aos="fade-up"] {
+    transform: translateY(20px);
+  }
+  
