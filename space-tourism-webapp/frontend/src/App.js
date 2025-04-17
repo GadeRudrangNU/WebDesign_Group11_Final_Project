@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Login   from './pages/login';
 import Home    from './components/Home';
 import Profile from './pages/profile';
+import CoordinatorDashboard from './pages/CoordinatorDashboard';
 // …import any other role‑based pages here…
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
       <Route path="/profile" element={<Profile />} />
       {/* e.g. <Route path="/admin" element={<Admin />} /> */}
       <Route path="*"        element={<Navigate to="/login" replace />} />
+      <Route path="/coordinator" element={<ProtectedRoute allowedRoles={['TripCoordinator']}><CoordinatorDashboard /></ProtectedRoute>} />
     </Routes>
   );
 }

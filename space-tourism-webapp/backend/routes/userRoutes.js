@@ -7,5 +7,6 @@ const userController = require('../controllers/userController');
 router.get('/profile', authMiddleware, (req, res) => {
   res.json({ message: 'This is a protected profile route', user: req.user });
 });
+router.get('/guides', authMiddleware, userController.getGuides);
 
 module.exports = router;
