@@ -1,0 +1,59 @@
+/* TripDetail.css */
+.tripdetail-root {
+    background: url('../assets/stars.png') center center / cover no-repeat;
+    min-height: 100vh;
+    padding: 2rem;
+    color: #ddd;
+  }
+  
+  /* Glow effect for the heading */
+  .tripdetail-root .glow-heading {
+    color: #fff;
+    text-shadow:
+      0 0 8px rgba(0,255,255,0.8),
+      0 0 16px rgba(0,255,255,0.6),
+      0 0 24px rgba(0,255,255,0.4);
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  /* Make muted text legible on dark bg */
+  .tripdetail-root .text-muted {
+    color: #aaa !important;
+  }
+  
+  /* Carousel captions on dark bg */
+  .tripdetail-root .carousel-caption {
+    color: #fff;
+    text-shadow: 0 0 6px rgba(0,0,0,0.8);
+  }
+  
+  /* Info list styling */
+  .tripdetail-root ul {
+    list-style: none;
+    padding: 0;
+  }
+  .tripdetail-root ul li {
+    margin: .5rem 0;
+    font-size: 1rem;
+  }
+  
+  /* Book button styling */
+  .tripdetail-root .btn-primary {
+    background: linear-gradient(45deg, #00ffff, #0066ff);
+    border: none;
+  }
+  .tripdetail-root .btn-primary:hover {
+    background: linear-gradient(45deg, #0066ff, #00ffff);
+  }
+  .tripdetail-root .table {
+    background: rgba(0, 0, 30, 0.8);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 0.5rem;
+  }
+  .tripdetail-root .table td {
+    vertical-align: middle;
+    font-size: 1rem;
+  }
+  

@@ -9,6 +9,7 @@ import TripList    from './components/TripList'
   import TripDetail  from './components/TripDetail'
   import ProtectedRoute from './components/ProtectedRoute';
   import Unauthorized    from './pages/Unauthorized';
+  import AdminPage from './pages/AdminPage';
 // …import any other role‑based pages here…
 
 export default function App() {
@@ -53,6 +54,15 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+      {/* Admin Dashboard (Admins only) */}
+     <Route
+       path="/admin"
+       element={
+         <ProtectedRoute allowedRoles={['Admin']}>
+           <AdminPage />
+         </ProtectedRoute>
+       }
+     />
       {/* e.g. <Route path="/admin" element={<Admin />} /> */}
       <Route path="*"        element={<Navigate to="/login" replace />} />
     </Routes>

@@ -1,9 +1,12 @@
 // frontend/src/components/TripList.jsx
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { fetchTrips } from '../services/apiService'
+import '../styles/TripList.css'
 
 export default function TripList() {
   const [trips, setTrips] = useState([])
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchTrips()
@@ -12,10 +15,24 @@ export default function TripList() {
   }, [])
 
   return (
-    <div className="row">
-      {trips.map(t => (
-        <div key={t._id} className="col-md-4 mb-4">
-          <div className="card">
+    <div className="trips-root" style={{ position: 'relative' }}>
+      {/* ← Back to Home button */}
+      <div style={{ position: 'absolute', top: '1rem', left: '1rem' }}>
+        <button
+          className="btn btn-outline-light"
+          onClick={() => navigate('/home')}
+        >
+          ← Back to Home
+        </button>
+      </div>
+
+      <div className="trips-header">
+        <h2>Available Trips</h2>
+        <p>Choose your next cosmic adventure</p>
+      </div>
+      <div className="trips-grid">
+        {trips.map(t => (
+          <div key={t._id} className="trip-card">
             <img src={t.images[0]} className="card-img-top" alt={t.name}/>
             <div className="card-body">
               <h5 className="card-title">{t.name}</h5>
@@ -25,8 +42,8 @@ export default function TripList() {
               </a>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }

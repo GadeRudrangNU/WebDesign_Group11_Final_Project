@@ -1,11 +1,13 @@
 // frontend/src/components/TripDetail.jsx
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { fetchTrip, bookTrip } from '../services/apiService'
-import { Carousel, Button, Modal, Form } from 'react-bootstrap'
+import { Carousel, Button, Modal, Form, Table } from 'react-bootstrap'
+import '../styles/TripDetail.css'
 
 export default function TripDetail() {
   const { slug } = useParams()
+  const navigate = useNavigate()
   const [trip, setTrip]         = useState(null)
   const [showBook, setShowBook] = useState(false)
   const [passengers, setPassengers] = useState(1)
@@ -30,9 +32,21 @@ export default function TripDetail() {
   if (!trip) return <p>Loading…</p>
 
   return (
-    <div className="container my-5">
-      <h2>{trip.name}</h2>
-      <p className="text-muted">{trip.location}</p>
+    // make this relative so the back button can be positioned absolutely
+    <div className="tripdetail-root" style={{ position: 'relative' }}>
+      {/* ← Back button now in top-left */}
+      <div style={{ position: 'absolute', top: '1rem', left: '1rem' }}>
+        <Button variant="outline-light" onClick={() => navigate('/trips')}>
+          ← Back to Trips
+        </Button>
+      </div>
+
+      <h2 className="glow-heading" style={{ textAlign: 'center', marginTop: '2rem' }}>
+        {trip.name}
+      </h2>
+      <p className="text-muted" style={{ textAlign: 'center' }}>
+        {trip.location}
+      </p>
 
       <Carousel>
         {trip.images.map((img, i) => (
@@ -47,20 +61,57 @@ export default function TripDetail() {
         ))}
       </Carousel>
 
-      <div className="mt-4">
+      <div
+        className="mt-4"
+        style={{
+          maxWidth: '600px',
+          margin: '1.5rem auto',
+          color: '#ddd',
+          textAlign: 'center'
+        }}
+      >
         <p>{trip.description}</p>
-        <ul>
-          <li><strong>Cost:</strong> ${trip.cost}</li>
-          <li><strong>Distance:</strong> {trip.distance} million km</li>
-          <li><strong>Duration:</strong> {trip.durationDays} days</li>
-          <li><strong>Seats left:</strong> {trip.seatsAvailable}</li>
-        </ul>
-        <Button
-          onClick={() => setShowBook(true)}
-          disabled={trip.seatsAvailable < 1}
+
+        <h3 className="glow-heading" style={{ fontSize: '1.4rem', marginTop: '2rem' }}>
+          Details
+        </h3>
+
+        <Table
+          striped
+          bordered
+          hover
+          variant="dark"
+          className="mt-3"
+          style={{ maxWidth: '400px', margin: '0 auto' }}
         >
-          Book Now
-        </Button>
+          <tbody>
+            <tr>
+              <td>Cost</td>
+              <td>${trip.cost.toLocaleString()}</td>
+            </tr>
+            <tr>
+              <td>Distance</td>
+              <td>{trip.distance} million km</td>
+            </tr>
+            <tr>
+              <td>Duration</td>
+              <td>{trip.durationDays} days</td>
+            </tr>
+            <tr>
+              <td>Seats left</td>
+              <td>{trip.seatsAvailable}</td>
+            </tr>
+          </tbody>
+        </Table>
+
+        <div style={{ marginTop: '1.5rem' }}>
+          <Button
+            onClick={() => setShowBook(true)}
+            disabled={trip.seatsAvailable < 1}
+          >
+            Book Now
+          </Button>
+        </div>
       </div>
 
       <Modal show={showBook} onHide={() => setShowBook(false)}>
