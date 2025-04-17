@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-// Placeholder mission controller function
-const missionController = {
-  getMissions: (req, res) => res.json({ message: 'List of missions' })
-};
+const missionController = require('../controllers/missionController');
+const authMiddleware = require('../middlewares/authMiddleware');
 
-router.get('/', missionController.getMissions);
+router.use(authMiddleware); // All routes protected
+
+router.get('/', missionController.getAllMissions);
+router.post('/', missionController.createMission);
+
 module.exports = router;

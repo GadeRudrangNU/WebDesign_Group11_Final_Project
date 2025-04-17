@@ -19,6 +19,7 @@ app.use(cors());         // Enable CORS
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/missions', require('./routes/missionRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/guide', require('./routes/guideRoutes'));
 
 // Start the Server
 const PORT = process.env.PORT || 5000;
