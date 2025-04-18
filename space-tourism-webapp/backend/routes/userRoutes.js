@@ -20,4 +20,20 @@ router.get(
 );
 router.get('/admin/users', protect, isAdmin, adminController.getAllUsers);
 
+// Admin-only routes
+router.put(
+  '/admin/users/:id',
+  protect,
+  isAdmin,
+  adminController.updateUser
+);
+
+router.delete(
+  '/admin/users/:id',
+  protect,
+  isAdmin,
+  adminController.deleteUser
+);
+
+
 module.exports = router;

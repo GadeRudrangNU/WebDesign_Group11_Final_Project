@@ -151,3 +151,33 @@ export async function postReview(tripId, reviewData) {
   if (!res.ok) throw new Error(`Post review failed: ${res.status}`);
   return res.json();
 }
+
+/**
+ * Update a user by ID (Admin only)
+ * PUT /api/users/admin/users/:id
+ */
+export async function updateUser(id, data, token = getToken()) {
+  const res = await fetch(`${API_BASE_URL}/users/admin/users/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error(`Update user failed: ${res.status}`);
+  return res.json();
+}
+
+/**
+ * Delete a user by ID (Admin only)
+ * DELETE /api/users/admin/users/:id
+ */
+export async function deleteUser(id, token = getToken()) {
+  const res = await fetch(`${API_BASE_URL}/users/admin/users/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(`Delete user failed: ${res.status}`);
+  return res.json();
+}
