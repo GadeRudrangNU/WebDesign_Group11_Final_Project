@@ -10,6 +10,8 @@ import TripList    from './components/TripList'
   import ProtectedRoute from './components/ProtectedRoute';
   import Unauthorized    from './pages/Unauthorized';
   import AdminPage from './pages/AdminPage';
+  import PaymentPage from './pages/PaymentPage'; 
+import BookingSuccess from './pages/BookingSuccess'
 // …import any other role‑based pages here…
 
 export default function App() {
@@ -51,6 +53,34 @@ export default function App() {
         element={
           <ProtectedRoute allowedRoles={['Traveler']}>
             <TripDetail />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/payment"
+        element={
+          <ProtectedRoute allowedRoles={['Traveler']}>
+            <PaymentPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* 👉 Added new dynamic Payment Route for Stripe Checkout */}
+      <Route
+        path="/payment/:tripId"
+        element={
+          <ProtectedRoute allowedRoles={['Traveler']}>
+            <PaymentPage />
+          </ProtectedRoute>
+        }
+      />
+      {/* ✅ Added without changing any existing code */}
+
+      <Route
+        path="/booking-success"
+        element={
+          <ProtectedRoute allowedRoles={['Traveler']}>
+            <BookingSuccess />
           </ProtectedRoute>
         }
       />

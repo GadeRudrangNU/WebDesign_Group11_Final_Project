@@ -20,16 +20,17 @@ export default function TripDetail() {
 
   const handleBooking = async () => {
     try {
-      await bookTrip(trip._id, passengers)
-      alert('Booking successful!')
-      setShowBook(false)
+      // Instead of direct booking, redirect to payment page
+      navigate(`/payment/${trip._id}`, { state: { passengers: 1 } }); // Example: you can pass passengers if needed
     } catch (err) {
-      console.error(err)
-      alert('Booking failed')
+      console.error(err);
+      alert('Failed to proceed to booking!');
     }
-  }
+  };
 
-  if (!trip) return <p>Loading…</p>
+  if (!trip) {
+    return <div>Loading trip details...</div>;
+  }
 
   return (
     // make this relative so the back button can be positioned absolutely
@@ -105,12 +106,12 @@ export default function TripDetail() {
         </Table>
 
         <div style={{ marginTop: '1.5rem' }}>
-          <Button
-            onClick={() => setShowBook(true)}
-            disabled={trip.seatsAvailable < 1}
-          >
-            Book Now
-          </Button>
+        <Button
+         onClick={handleBooking}
+         disabled={trip.seatsAvailable < 1}
+       >
+         Book Now
+       </Button>
         </div>
       </div>
 
