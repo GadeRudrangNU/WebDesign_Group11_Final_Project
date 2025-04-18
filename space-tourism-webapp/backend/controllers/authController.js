@@ -9,6 +9,8 @@ exports.register = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
     
+    const userRole = role || 'Traveler';
+ 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
