@@ -3,19 +3,47 @@
 const express = require('express');
 const router  = express.Router();
 
-// Require exactly the file and export names:
-const { protect } = require('../middlewares/authMiddleware'); 
+const { protect, isAdmin } = require('../middlewares/authMiddleware');
+const adminController = require('../controllers/adminController');
 
-// Protected profile endpoint
 router.get(
   '/profile',
-  protect,               // <-- use the imported protect function
+  protect,              
   (req, res) => {
     res.json({
       message: 'This is a protected profile route',
       user: req.user
     });
   }
+);
+router.get('/admin/users', protect, isAdmin, adminController.getAllUsers);
+ 
+// Admin-only routes
+router.get(
+  '/',
+  protect,
+  isAdmin,
+  adminController.getAllUsers
+);
+router.put(
+  '/admin/users/:id',
+  protect,
+  isAdmin,
+  adminController.updateUser
+);
+ 
+router.delete(
+  '/admin/users/:id',
+  protect,
+  isAdmin,
+  adminController.deleteUser
+);
+// CREATE a new user
+router.post(
+  '/',
+  protect,
+  isAdmin,
+  adminController.createUser
 );
 
 module.exports = router;

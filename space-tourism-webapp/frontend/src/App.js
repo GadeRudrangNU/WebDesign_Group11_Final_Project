@@ -12,6 +12,7 @@ import TripList    from './components/TripList'
   import AdminPage from './pages/AdminPage';
   import PaymentPage from './pages/PaymentPage'; 
 import BookingSuccess from './pages/BookingSuccess'
+import CreateUser      from './pages/CreateUser'
 // …import any other role‑based pages here…
 
 export default function App() {
@@ -90,6 +91,15 @@ export default function App() {
        element={
          <ProtectedRoute allowedRoles={['Admin']}>
            <AdminPage />
+         </ProtectedRoute>
+       }
+     />
+     {/* Create User page */}
+     <Route
+       path="/admin/users/create"
+       element={
+         <ProtectedRoute allowedRoles={['Admin']}>
+           <CreateUser />
          </ProtectedRoute>
        }
      />
