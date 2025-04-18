@@ -1,11 +1,11 @@
 // frontend/src/services/apiService.js
-
+ 
 const API_BASE_URL = "http://localhost:5000/api"; // adjust if your backend URL is different
-
+ 
 // ─────────────────────────────────────────────────────────────
 // Token helper
 // ─────────────────────────────────────────────────────────────
-
+ 
 /**
  * Simple JWT getter from localStorage.
  * Call this in all protected requests.
@@ -13,11 +13,11 @@ const API_BASE_URL = "http://localhost:5000/api"; // adjust if your backend URL 
 export function getToken() {
   return localStorage.getItem("token");
 }
-
+ 
 // ─────────────────────────────────────────────────────────────
 // AUTH
 // ─────────────────────────────────────────────────────────────
-
+ 
 /**
  * Register a new user
  * POST /api/auth/register
@@ -31,7 +31,7 @@ export async function registerUser(userData) {
   if (!res.ok) throw new Error(`Register failed: ${res.status}`);
   return res.json();
 }
-
+ 
 /**
  * Log in an existing user
  * POST /api/auth/login
@@ -48,7 +48,7 @@ export async function loginUser(credentials) {
   if (!res.ok) throw new Error(`Login failed: ${res.status}`);
   return res.json();
 }
-
+ 
 /**
  * Fetch the logged‑in user’s profile
  * GET /api/users/profile
@@ -63,11 +63,11 @@ export async function getProfile(token = getToken()) {
   if (!res.ok) throw new Error(`Fetch profile failed: ${res.status}`);
   return res.json();
 }
-
+ 
 // ─────────────────────────────────────────────────────────────
 // TRIPS & BOOKINGS
 // ─────────────────────────────────────────────────────────────
-
+ 
 /**
  * Fetch all available trips
  * GET /api/trips
@@ -77,7 +77,7 @@ export async function fetchTrips() {
   if (!res.ok) throw new Error(`Fetch trips failed: ${res.status}`);
   return res.json();
 }
-
+ 
 /**
  * Fetch details for a single trip by its slug
  * GET /api/trips/:slug
@@ -87,7 +87,7 @@ export async function fetchTrip(slug) {
   if (!res.ok) throw new Error(`Fetch trip '${slug}' failed: ${res.status}`);
   return res.json();
 }
-
+ 
 /**
  * Book a trip (must be logged in)
  * POST /api/bookings
@@ -118,7 +118,7 @@ export async function fetchAllUsers(token = getToken()) {
   if (!res.ok) throw new Error(`Fetch users failed: ${res.status}`);
   return res.json();
 }
-
+ 
 /**
  * Fetch all bookings for the current user
  * GET /api/bookings
@@ -134,7 +134,7 @@ export async function fetchMyBookings() {
   if (!res.ok) throw new Error(`Fetch bookings failed: ${res.status}`);
   return res.json();
 }
-
+ 
 /**
  * Post a review for a trip
  * POST /api/trips/:tripId/reviews
@@ -195,5 +195,59 @@ export async function createUser(userData, token = getToken()) {
     body: JSON.stringify(userData),
   });
   if (!res.ok) throw new Error(`Create user failed: ${res.status}`);
+  return res.json();
+}
+// ─────────────────────────────────────────────────────────────
+// ADMIN – TRIPS (NEW)
+// ─────────────────────────────────────────────────────────────
+ 
+/**
+ * Create a new trip (Admin only)
+ * POST /api/trips
+ */
+export async function createTrip(tripData, token = getToken()) {
+  const res = await fetch(`${API_BASE_URL}/trips`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(tripData),
+  });
+  if (!res.ok) throw new Error(`Create trip failed: ${res.status}`);
+  return res.json();
+}
+ 
+/**
+ * Update an existing trip (Admin only)
+ * PUT /api/trips/:id
+ * (Make sure you have a matching backend route.)
+ */
+export async function updateTrip(id, tripData, token = getToken()) {
+  const res = await fetch(`${API_BASE_URL}/trips/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(tripData),
+  });
+  if (!res.ok) throw new Error(`Update trip failed: ${res.status}`);
+  return res.json();
+}
+ 
+/**
+ * Delete a trip (Admin only)
+ * DELETE /api/trips/:id
+ * (Make sure you have a matching backend route.)
+ */
+export async function deleteTrip(id, token = getToken()) {
+  const res = await fetch(`${API_BASE_URL}/trips/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error(`Delete trip failed: ${res.status}`);
   return res.json();
 }

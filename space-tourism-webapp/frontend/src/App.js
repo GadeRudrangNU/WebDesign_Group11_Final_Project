@@ -5,26 +5,24 @@ import Login from './pages/login';
 import Home from './components/Home';
 import Profile from './pages/profile';
 import CoordinatorDashboard from './pages/CoordinatorDashboard';
-import TripList    from './components/TripList'
-  import TripDetail  from './components/TripDetail'
-  import ProtectedRoute from './components/ProtectedRoute';
-  import Unauthorized    from './pages/Unauthorized';
-  import AdminPage from './pages/AdminPage';
-  import PaymentPage from './pages/PaymentPage'; 
-import BookingSuccess from './pages/BookingSuccess'
-import CreateUser      from './pages/CreateUser'
-import GuideDashboard from './pages/guideDashboard';
+import TripList from './components/TripList'
+import TripDetail from './components/TripDetail'
 import ProtectedRoute from './components/ProtectedRoute';
+import Unauthorized from './pages/Unauthorized';
+import AdminPage from './pages/AdminPage';
+import PaymentPage from './pages/PaymentPage';
+import BookingSuccess from './pages/BookingSuccess'
+import CreateUser from './pages/CreateUser'
+import CreateTrip from './pages/CreateTrip';
+import GuideDashboard from './pages/guideDashboard';
+
 // …import any other role‑based pages here…
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/"        element={<Navigate to="/login" replace />} />
-      <Route path="/login"   element={<Login />} />
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/home" element={<Home />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route
@@ -36,7 +34,7 @@ export default function App() {
         }
       />
       {/* Coordinator Dashboard (TripCoordinators only) */}
-      
+
       <Route
         path="/coordinator"
         element={
@@ -70,6 +68,15 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/guide"
+        element={
+          <ProtectedRoute allowedRoles={['CertifiedSpaceGuide']}>
+            <GuideDashboard />
+          </ProtectedRoute>
+        }
+      />
+
 
       {/* 👉 Added new dynamic Payment Route for Stripe Checkout */}
       <Route
@@ -91,26 +98,34 @@ export default function App() {
         }
       />
       {/* Admin Dashboard (Admins only) */}
-     <Route
-       path="/admin"
-       element={
-         <ProtectedRoute allowedRoles={['Admin']}>
-           <AdminPage />
-         </ProtectedRoute>
-       }
-     />
-     {/* Create User page */}
-     <Route
-       path="/admin/users/create"
-       element={
-         <ProtectedRoute allowedRoles={['Admin']}>
-           <CreateUser />
-         </ProtectedRoute>
-       }
-     />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute allowedRoles={['Admin']}>
+            <AdminPage />
+          </ProtectedRoute>
+        }
+      />
+      {/* Create User page */}
+      <Route
+        path="/admin/users/create"
+        element={
+          <ProtectedRoute allowedRoles={['Admin']}>
+            <CreateUser />
+          </ProtectedRoute>
+        }
+      />
+      {/* ← NEW: Create Trips page */}
+      <Route
+        path="/admin/trips/create"
+        element={
+          <ProtectedRoute allowedRoles={['Admin']}>
+            <CreateTrip />
+          </ProtectedRoute>
+        }
+      />
       {/* e.g. <Route path="/admin" element={<Admin />} /> */}
       <Route path="*" element={<Navigate to="/login" replace />} />
-      <Route path="/guide" element={<ProtectedRoute allowedRoles={['CertifiedSpaceGuide']}><GuideDashboard /></ProtectedRoute>} />
     </Routes>
   );
 }

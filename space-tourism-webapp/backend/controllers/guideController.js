@@ -1,5 +1,4 @@
 const Mission = require('../models/Mission');
-const sendNotification = require('../utils/sendNotification');
 
 // Fetch missions assigned to the logged-in guide
 exports.getAssignedMissions = async (req, res) => {
@@ -33,10 +32,13 @@ exports.postInstructions = async (req, res) => {
             return res.status(403).json({ message: 'Access denied or mission not found' });
         }
 
-        mission.instructions = instructions;
-        await mission.save();
+        const updatedMission = await Mission.findByIdAndUpdate(
+            id,
+            { instructions },
+            { new: true, runValidators: false }
+        );
 
-        res.status(200).json({ message: 'Instructions updated successfully', mission });
+        res.status(200).json({ message: 'Instructions updated successfully', mission: updatedMission });
     } catch (error) {
         res.status(500).json({ message: 'Error updating instructions', error });
     }
@@ -52,14 +54,13 @@ exports.cancelMission = async (req, res) => {
             return res.status(403).json({ message: 'Access denied or mission not found' });
         }
 
-        mission.status = 'cancelled';
-        await mission.save();
+        const updatedMission = await Mission.findByIdAndUpdate(
+            id,
+            { status: 'cancelled' },
+            { new: true, runValidators: false }
+          );
 
-        // Optional: Trigger notification to coordinator & traveller
-        await sendNotification(mission.travellerId, `Mission "${mission.tripName}" was cancelled by the guide.`);
-    await sendNotification(mission.coordinatorId, `Mission "${mission.tripName}" was cancelled by the guide.`);
-
-        res.status(200).json({ message: 'Mission cancelled successfully' });
+        res.status(200).json({ message: 'Mission cancelled successfully', mission: updatedMission });
     } catch (error) {
         res.status(500).json({ message: 'Error cancelling mission', error });
     }
@@ -75,12 +76,13 @@ exports.completeMission = async (req, res) => {
             return res.status(403).json({ message: 'Access denied or mission not found' });
         }
 
-        mission.status = 'completed';
-        await mission.save();
+        const updatedMission = await Mission.findByIdAndUpdate(
+            id,
+            { status: 'Completed' }, 
+            { new: true, runValidators: false }
+        );
 
-        await sendNotification(mission.coordinatorId, `Mission "${mission.tripName}" has been marked completed by the guide.`);
-
-        res.status(200).json({ message: 'Mission marked as completed' });
+        res.status(200).json({ message: 'Mission marked as completed', mission: updatedMission });
     } catch (error) {
         res.status(500).json({ message: 'Error completing mission', error });
     }

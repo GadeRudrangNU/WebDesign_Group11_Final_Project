@@ -18,7 +18,7 @@ import {
   updateUser,
   deleteUser
 } from '../services/apiService';
-
+ 
 export default function AdminPage() {
   const navigate = useNavigate();
   const [users, setUsers]         = useState([]);
@@ -26,26 +26,26 @@ export default function AdminPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm]           = useState({ username: '', role: '' });
   const [error, setError]         = useState('');
-
+ 
   // reload users
   const load = () =>
     fetchAllUsers()
       .then(setUsers)
       .catch(err => setError(err.message));
-
+ 
   useEffect(() => {
     load();
   }, []);
-
+ 
   const selectUser = user => {
     setSelected(user);
     setForm({ username: user.username, role: user.role });
     setIsEditing(false);
   };
-
+ 
   const handleChange = e =>
     setForm(f => ({ ...f, [e.target.name]: e.target.value }));
-
+ 
   const save = async () => {
     try {
       await updateUser(selected._id, form);
@@ -55,7 +55,7 @@ export default function AdminPage() {
       setError(e.message);
     }
   };
-
+ 
   const remove = async () => {
     if (!window.confirm('Delete this user?')) return;
     try {
@@ -66,21 +66,21 @@ export default function AdminPage() {
       setError(e.message);
     }
   };
-
+ 
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login', { replace: true });
   };
-
+ 
   const handleManageTrips = () => {
     navigate('/admin/trips');
   };
-
+ 
   // ← New: Create User handler
   const handleCreateUser = () => {
     navigate('/admin/users/create');
   };
-
+ 
   return (
     <div
       style={{
@@ -120,6 +120,14 @@ export default function AdminPage() {
               Create User
             </Button>
             <Button
+              variant="outline-warning"
+              size="sm"
+              className="me-2"
+              onClick={() => navigate('/admin/trips/create')}
+            >
+              Create Trips
+            </Button>
+            <Button
               variant="outline-info"
               size="sm"
               className="me-2"
@@ -137,7 +145,7 @@ export default function AdminPage() {
           </Nav>
         </Container>
       </Navbar>
-
+ 
       {/* Content */}
       <Container className="py-4">
         {/* Header */}
@@ -150,7 +158,7 @@ export default function AdminPage() {
             {error && <div className="alert alert-danger">{error}</div>}
           </Col>
         </Row>
-
+ 
         {/* Users Table with scroll pane & fade-in */}
         <Row>
           <Col>
@@ -205,7 +213,7 @@ export default function AdminPage() {
             </Card>
           </Col>
         </Row>
-
+ 
         {/* Edit User Form */}
         {selected && (
           <Row className="justify-content-center mt-5">
@@ -219,7 +227,7 @@ export default function AdminPage() {
                   <Card.Title style={{ fontSize: '1.5rem', color: '#FFD700' }}>
                     Edit User
                   </Card.Title>
-
+ 
                   <Form>
                     <Form.Group controlId="formUserId" className="mb-3">
                       <Form.Label style={{ color: '#aaa' }}>ID</Form.Label>
@@ -230,7 +238,7 @@ export default function AdminPage() {
                         style={{ fontSize: '1rem', color: '#fff' }}
                       />
                     </Form.Group>
-
+ 
                     <Form.Group controlId="formUserEmail" className="mb-3">
                       <Form.Label style={{ color: '#aaa' }}>Email</Form.Label>
                       <Form.Control
@@ -240,7 +248,7 @@ export default function AdminPage() {
                         style={{ fontSize: '1rem', color: '#fff' }}
                       />
                     </Form.Group>
-
+ 
                     <Form.Group controlId="formUsername" className="mb-3">
                       <Form.Label style={{ color: '#aaa' }}>Username</Form.Label>
                       {isEditing ? (
@@ -259,7 +267,7 @@ export default function AdminPage() {
                         />
                       )}
                     </Form.Group>
-
+ 
                     <Form.Group controlId="formRole" className="mb-4">
                       <Form.Label style={{ color: '#aaa' }}>Role</Form.Label>
                       {isEditing ? (
@@ -284,7 +292,7 @@ export default function AdminPage() {
                         />
                       )}
                     </Form.Group>
-
+ 
                     <div className="text-end">
                       {!isEditing ? (
                         <Button
