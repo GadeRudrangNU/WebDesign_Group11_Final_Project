@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import '../styles/Home.css';
+import missionVideo from '../Video/Mission.mp4';
  
  
 import starsBg      from '../assets/stars.png';
@@ -137,7 +138,7 @@ export default function Home() {
         <section id="mission" data-aos="fade-up">
           <div className="video-background">
             <video autoPlay loop muted playsInline>
-              <source src="/Video/Mission.mp4" type="video/mp4" />
+            <source src={missionVideo} type="video/mp4" />
             </video>
           </div>
           <div className="mission-content">
