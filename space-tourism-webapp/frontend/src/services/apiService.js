@@ -108,7 +108,16 @@ export async function bookTrip(tripId, passengers = 1) {
   }
   return res.json();
 }
-
+//admin
+export async function fetchAllUsers(token = getToken()) {
+  const res = await fetch(`${API_BASE_URL}/users/admin/users`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error(`Fetch users failed: ${res.status}`);
+  return res.json();
+}
 /**
  * Fetch all bookings for the current user
  * GET /api/bookings

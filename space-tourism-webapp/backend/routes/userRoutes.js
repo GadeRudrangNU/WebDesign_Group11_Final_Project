@@ -4,7 +4,8 @@ const express = require('express');
 const router  = express.Router();
 
 // Require exactly the file and export names:
-const { protect } = require('../middlewares/authMiddleware'); 
+const { protect, isAdmin } = require('../middlewares/authMiddleware'); 
+const adminController = require('../controllers/adminController');
 
 // Protected profile endpoint
 router.get(
@@ -17,5 +18,6 @@ router.get(
     });
   }
 );
+router.get('/admin/users', protect, isAdmin, adminController.getAllUsers);
 
 module.exports = router;
