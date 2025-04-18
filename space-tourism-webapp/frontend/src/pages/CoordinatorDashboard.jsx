@@ -1,5 +1,9 @@
+// src/pages/CoordinatorDashboard.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import '../styles/CoordinatorDashboard.css';
 
 const CoordinatorDashboard = () => {
@@ -9,9 +13,16 @@ const CoordinatorDashboard = () => {
   const [seatEdits, setSeatEdits] = useState({});
   const [statusUpdates, setStatusUpdates] = useState({});
   const [message, setMessage] = useState('');
-  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [form, setForm] = useState({
+    title: '',
+    destination: '',
+    launchDate: '',
+    seatCapacity: '',
+  });
 
   const token = localStorage.getItem('token');
+  const navigate = useNavigate();
 
   const fetchMissions = async () => {
     try {
@@ -19,15 +30,8 @@ const CoordinatorDashboard = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
-  
-      if (Array.isArray(data)) {
-        setMissions(data);
-      } else {
-        setMissions([]);
-        setMessage(data.message || 'Unexpected response format');
-      }
-    } catch (err) {
-      setMissions([]);
+      Array.isArray(data) ? setMissions(data) : setMessage(data.message || 'Unexpected response');
+    } catch {
       setMessage('Failed to fetch missions');
     }
   };
@@ -99,38 +103,45 @@ const CoordinatorDashboard = () => {
     }
   };
 
+  const handleAddMission = async () => {
+    try {
+      await fetch('http://localhost:5000/api/missions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(form)
+      });
+      setShowModal(false);
+      setForm({ title: '', destination: '', launchDate: '', seatCapacity: '' });
+      fetchMissions();
+    } catch {
+      setMessage('Failed to add mission');
+    }
+  };
+
   return (
     <div className="coordinator-dashboard">
-      {/* ─── NAVBAR ───────────────────────────────────── */}
+      {/* NAVBAR */}
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark space-navbar">
         <div className="container-fluid">
           <span className="navbar-brand">🚀 Mission Control</span>
 
           <ul className="navbar-nav ms-auto d-flex flex-row gap-2">
-            {/* Manage Trips Button */}
             <li className="nav-item">
-            <button
-              type="button"
-              className="btn btn-outline-warning"
-              onClick={(e) => {
-                e.preventDefault();         // <-- prevents accidental form submit or reload
-                navigate('/coordinator/manage-trips');
-              }}
-            >
-              Manage Trips
-            </button>
+              <button className="btn btn-outline-success" onClick={() => setShowModal(true)}>➕ Add Mission</button>
             </li>
-
-            {/* Logout Button */}
             <li className="nav-item">
-              <button
-                className="btn btn-outline-light"
-                onClick={() => {
-                  localStorage.removeItem('token');
-                  localStorage.removeItem('role');
-                  navigate('/login');
-                }}
-              >
+              <button className="btn btn-outline-warning" onClick={() => navigate('/coordinator/manage-trips')}>
+                Manage Trips
+              </button>
+            </li>
+            <li className="nav-item">
+              <button className="btn btn-outline-light" onClick={() => {
+                localStorage.clear();
+                navigate('/login');
+              }}>
                 Logout
               </button>
             </li>
@@ -138,6 +149,7 @@ const CoordinatorDashboard = () => {
         </div>
       </nav>
 
+      {/* MAIN CONTENT */}
       <div className="container mt-4">
         <h2 className="dashboard-heading">🛰️ Scheduled Missions Panel</h2>
         {message && <div className="alert alert-warning">{message}</div>}
@@ -169,9 +181,7 @@ const CoordinatorDashboard = () => {
                       <option>Delayed</option>
                       <option>Completed</option>
                     </select>
-                    <button className="btn btn-sm btn-success mt-1" onClick={() => updateStatus(mission._id)}>
-                      Save
-                    </button>
+                    <button className="btn btn-sm btn-success mt-1" onClick={() => updateStatus(mission._id)}>Save</button>
                   </td>
                   <td>
                     <input
@@ -180,9 +190,7 @@ const CoordinatorDashboard = () => {
                       value={seatEdits[mission._id] || mission.seatCapacity}
                       onChange={(e) => setSeatEdits({ ...seatEdits, [mission._id]: e.target.value })}
                     />
-                    <button className="btn btn-sm btn-warning mt-1" onClick={() => updateSeats(mission._id)}>
-                      Save
-                    </button>
+                    <button className="btn btn-sm btn-warning mt-1" onClick={() => updateSeats(mission._id)}>Save</button>
                   </td>
                   <td>
                     <select
@@ -195,9 +203,7 @@ const CoordinatorDashboard = () => {
                         <option key={g._id} value={g._id}>{g.username}</option>
                       ))}
                     </select>
-                    <button className="btn btn-sm btn-primary mt-1" onClick={() => assignGuide(mission._id)}>
-                      Assign
-                    </button>
+                    <button className="btn btn-sm btn-primary mt-1" onClick={() => assignGuide(mission._id)}>Assign</button>
                   </td>
                 </tr>
               ))}
@@ -205,6 +211,37 @@ const CoordinatorDashboard = () => {
           </table>
         </div>
       </div>
+
+      {/* ADD MISSION MODAL */}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create New Mission</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-2">
+              <Form.Label>Title</Form.Label>
+              <Form.Control name="title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Destination</Form.Label>
+              <Form.Control name="destination" value={form.destination} onChange={(e) => setForm({ ...form, destination: e.target.value })} />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Launch Date</Form.Label>
+              <Form.Control type="date" name="launchDate" value={form.launchDate} onChange={(e) => setForm({ ...form, launchDate: e.target.value })} />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Seat Capacity</Form.Label>
+              <Form.Control type="number" name="seatCapacity" value={form.seatCapacity} onChange={(e) => setForm({ ...form, seatCapacity: e.target.value })} />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
+          <Button variant="primary" onClick={handleAddMission}>Create Mission</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
