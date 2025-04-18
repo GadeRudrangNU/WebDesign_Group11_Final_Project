@@ -1,0 +1,34 @@
+/* frontend/src/styles/CreateTrip.css */
+.create-trip-root {
+    background: url('../assets/stars.png') center center / cover no-repeat;
+    min-height: 100vh;
+    position: relative;
+    color: #fff;
+  }
+  .back-btn {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
+  }
+  .admin-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-weight: bold;
+    color: #FFD700;
+  }
+  .create-trip-form .form-control,
+  .create-trip-form .form-select,
+  .create-trip-form .form-control:focus {
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .create-trip-form .form-label {
+    color: #ddd;
+  }
+ 
+ 
+ 

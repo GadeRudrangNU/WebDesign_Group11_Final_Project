@@ -12,6 +12,7 @@ import BookingSuccess from './pages/BookingSuccess';
 // Commented these because files were missing
 // import CoordinatorDashboard from './components/CoordinatorDashboard';
 // import AdminPage from './components/AdminPage';
+import CreateTrip      from './pages/CreateTrip';
 
 export default function App() {
   return (
@@ -81,8 +82,8 @@ export default function App() {
       />
 
       {/* Trip Coordinator Routes */}
-      {/* Commented out since file missing */}
-      {/* 
+      
+      { /*
       <Route
         path="/coordinator"
         element={
@@ -104,7 +105,17 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+      
       */}
+      {/* ← NEW: Create Trips page */}
+     <Route
+        path="/admin/trips/create"
+        element={
+          <ProtectedRoute allowedRoles={['Admin']}>
+            <CreateTrip />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Catch-all (unknown routes) */}
       <Route path="*" element={<Navigate to="/login" replace />} />

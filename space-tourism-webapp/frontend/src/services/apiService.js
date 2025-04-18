@@ -142,3 +142,57 @@ export async function postReview(tripId, reviewData) {
   if (!res.ok) throw new Error(`Post review failed: ${res.status}`);
   return res.json();
 }
+// ─────────────────────────────────────────────────────────────
+// ADMIN – TRIPS (NEW)
+// ─────────────────────────────────────────────────────────────
+ 
+/**
+ * Create a new trip (Admin only)
+ * POST /api/trips
+ */
+export async function createTrip(tripData, token = getToken()) {
+  const res = await fetch(`${API_BASE_URL}/trips`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(tripData),
+  });
+  if (!res.ok) throw new Error(`Create trip failed: ${res.status}`);
+  return res.json();
+}
+ 
+/**
+ * Update an existing trip (Admin only)
+ * PUT /api/trips/:id
+ * (Make sure you have a matching backend route.)
+ */
+export async function updateTrip(id, tripData, token = getToken()) {
+  const res = await fetch(`${API_BASE_URL}/trips/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(tripData),
+  });
+  if (!res.ok) throw new Error(`Update trip failed: ${res.status}`);
+  return res.json();
+}
+ 
+/**
+ * Delete a trip (Admin only)
+ * DELETE /api/trips/:id
+ * (Make sure you have a matching backend route.)
+ */
+export async function deleteTrip(id, token = getToken()) {
+  const res = await fetch(`${API_BASE_URL}/trips/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error(`Delete trip failed: ${res.status}`);
+  return res.json();
+}

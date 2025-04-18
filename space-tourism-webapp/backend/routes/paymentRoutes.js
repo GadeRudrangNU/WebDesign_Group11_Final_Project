@@ -22,8 +22,8 @@ router.post('/create-checkout-session', async (req, res) => {
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: 'https://ef88-155-33-134-68.ngrok-free.app/booking-success',
-      cancel_url: 'https://ef88-155-33-134-68.ngrok-free.app/payment',
+      success_url: 'https://1e12-2601-19b-0-4c90-ac5f-e924-d9b6-8084.ngrok-free.app/booking-success',
+      cancel_url: 'https://1e12-2601-19b-0-4c90-ac5f-e924-d9b6-8084.ngrok-free.app/payment',
     });
 
     res.json({ id: session.id });

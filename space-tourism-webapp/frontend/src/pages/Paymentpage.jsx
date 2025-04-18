@@ -17,7 +17,7 @@ export default function PaymentPage() {
         const stripe = await stripePromise;
 
         // Create a Checkout Session on backend
-        const response = await fetch('https://b270-155-33-134-68.ngrok-free.app/api/payment/create-checkout-session', {
+        const response = await fetch('https://7ec4-2601-19b-0-4c90-ac5f-e924-d9b6-8084.ngrok-free.app/api/payment/create-checkout-session', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
