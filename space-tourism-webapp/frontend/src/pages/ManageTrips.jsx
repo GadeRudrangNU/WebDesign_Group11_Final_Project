@@ -51,7 +51,7 @@ const ManageTrips = () => {
     if (search) {
       results = results.filter(trip =>
         (trip.name || '').toLowerCase().includes(search.toLowerCase()) ||
-        (trip.destination || '').toLowerCase().includes(search.toLowerCase())
+        (trip.location || '').toLowerCase().includes(search.toLowerCase())
       );
     }
 
@@ -173,20 +173,26 @@ const ManageTrips = () => {
         <h2 className="mb-4">🪐 Manage Trips</h2>
 
         {/* Controls */}
-        <div className="d-flex justify-content-between mb-3">
+        <div className="d-flex justify-content-between align-items-center mb-3">
           <Form.Control
             type="text"
+            className="form-control me-2"
             placeholder="Search by name or destination"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            style={{ width: '300px' }}
+            style={{ maxWidth: '300px' }}
           />
-          <div className="d-flex gap-2">
-            <Form.Select value={sortBy} onChange={e => setSortBy(e.target.value)}>
+          <div className="d-flex gap-2 align-items-center">
+            <Form.Select
+              className="form-select"
+              style={{ maxWidth: '180px' }}
+              value={sortBy}
+              onChange={e => setSortBy(e.target.value)}
+            >
               <option value="name">Sort by Name</option>
               <option value="location">Sort by Location</option>
             </Form.Select>
-            <Button onClick={() => setShowModal(true)}>➕ Add Trip</Button>
+            <Button variant="primary" onClick={() => setShowModal(true)}>➕ Add Trip</Button>
           </div>
         </div>
 
@@ -206,7 +212,7 @@ const ManageTrips = () => {
               <tr key={trip._id}>
                 <td>{trip.name}</td>
                 <td>{trip.location}</td>
-                <td>{new Date(trip.launchDate).toLocaleDateString()}</td>
+                <td>{trip.launchDate ? new Date(trip.launchDate).toLocaleDateString() : 'N/A'}</td>
                 <td>{trip.seatsAvailable}</td>
                 <td>
                   <Button variant="warning" size="sm" onClick={() => handleEdit(trip)}>Edit</Button>{' '}
@@ -234,38 +240,18 @@ const ManageTrips = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-2">
-              <Form.Label>Name</Form.Label>
-              <Form.Control name="name" value={form.name} onChange={handleInputChange} required />
-            </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label>Slug</Form.Label>
-              <Form.Control name="slug" value={form.slug} onChange={handleInputChange} required />
-            </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label>Location</Form.Label>
-              <Form.Control name="location" value={form.location} onChange={handleInputChange} required />
-            </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label>Launch Date</Form.Label>
-              <Form.Control type="date" name="launchDate" value={form.launchDate} onChange={handleInputChange} required />
-            </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label>Seats Available</Form.Label>
-              <Form.Control type="number" name="seatsAvailable" value={form.seatsAvailable} onChange={handleInputChange} required />
-            </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label>Cost</Form.Label>
-              <Form.Control type="number" name="cost" value={form.cost} onChange={handleInputChange} required />
-            </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label>Distance (M km)</Form.Label>
-              <Form.Control type="number" name="distance" value={form.distance} onChange={handleInputChange} required />
-            </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label>Duration (days)</Form.Label>
-              <Form.Control type="number" name="durationDays" value={form.durationDays} onChange={handleInputChange} required />
-            </Form.Group>
+            {['name', 'slug', 'location', 'launchDate', 'seatsAvailable', 'cost', 'distance', 'durationDays'].map(field => (
+              <Form.Group key={field} className="mb-2">
+                <Form.Label>{field.replace(/([A-Z])/g, ' $1')}</Form.Label>
+                <Form.Control
+                  type={field === 'launchDate' ? 'date' : 'text'}
+                  name={field}
+                  value={form[field]}
+                  onChange={handleInputChange}
+                  required
+                />
+              </Form.Group>
+            ))}
           </Form>
         </Modal.Body>
         <Modal.Footer>
