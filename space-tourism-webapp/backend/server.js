@@ -14,6 +14,7 @@ app.use(cors());
 // existing routes
 app.use('/api/auth',     require('./routes/authRoutes'));
 app.use('/api/missions', require('./routes/missionRoutes'));
+
 app.use('/api/users',    require('./routes/userRoutes'));
 app.use('/api/trips', require('./routes/tripRoutes'));
 
@@ -21,6 +22,10 @@ app.use('/api/trips', require('./routes/tripRoutes'));
 // if you wrote tripRoutes.js with ES modules, either convert to commonjs:
 //    const tripRoutes = require('./routes/tripRoutes');
 // or rename to .cjs and import accordingly.
+
+app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/guide', require('./routes/guideRoutes'));
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
