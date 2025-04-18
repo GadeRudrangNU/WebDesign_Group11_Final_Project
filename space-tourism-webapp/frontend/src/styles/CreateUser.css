@@ -1,0 +1,44 @@
+.createuser-root {
+    background-image: url('../assets/stars.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    position: relative;
+  }
+  
+  /* place back button just below navbar */
+  .back-btn {
+    position: absolute;
+    top: 56px; /* navbar height */
+    left: 1rem;
+    z-index: 1000;
+  }
+  
+  /* center “Admin” title in the navbar */
+  .admin-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-weight: bold;
+    color: #FFD700;
+  }
+  
+  /* card styling */
+  .create-card {
+    max-width: 500px;
+    margin-top: 3rem;
+    background: rgba(0,0,0,0.7);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  
+  /* make labels & inputs readable */
+  .create-card .form-label {
+    color: #ddd;
+  }
+  .create-card .form-control,
+  .create-card .form-select {
+    background: rgba(255,255,255,0.9);
+    color: #000;
+  }
+  

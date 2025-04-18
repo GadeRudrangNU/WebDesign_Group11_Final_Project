@@ -10,6 +10,11 @@ import starsBg      from '../assets/stars.png';
 import moonSurface  from '../assets/moon1.png';
 import astronautImg from '../assets/astronaut.png';
 
+// imported carousel images
+import solarSystem    from '../assets/solar system.jpg';
+import spacecraftImg  from '../assets/spacecraft.jpeg';
+import crewImg        from '../assets/crew.jpg';
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
@@ -44,7 +49,6 @@ export default function Home() {
   }, []);
 
   const handleLogout = () => {
-    // clear any auth state you have
     localStorage.removeItem('token');
     navigate('/login', { replace: true });
   };
@@ -70,6 +74,12 @@ export default function Home() {
             <ul className="navbar-nav ms-auto align-items-center">
               <li className="nav-item">
                 <a className="nav-link" href="#hero">Home</a>
+              </li>
+              {/* ——— Trips page ——— */}
+              <li className="nav-item">
+                <Link className="nav-link" to="/trips">
+                  Trips
+                </Link>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#mission">Mission</a>
@@ -124,6 +134,7 @@ export default function Home() {
             Welcome To Your Space Journey!
           </h1>
         </section>
+        
 
         {/* ─── MISSION ────────────────────────────────────────────────────────── */}
         <section id="mission" data-aos="fade-up">
@@ -155,21 +166,21 @@ export default function Home() {
             </div>
             <div className="carousel-inner">
               <div className="carousel-item active">
-                <img src="/images/solar system.jpg" className="d-block w-100" alt="Explore Planets" />
+                <img src={solarSystem} className="d-block w-100" alt="Explore Planets" />
                 <div className="carousel-caption">
                   <h5>Explore Different Planets</h5>
                   <p>Choose from Mars, Titan, Europa, and more.</p>
                 </div>
               </div>
               <div className="carousel-item">
-                <img src="/images/spacecraft.jpeg" className="d-block w-100" alt="Crew Capsule Tour" />
+                <img src={spacecraftImg} className="d-block w-100" alt="Crew Capsule Tour" />
                 <div className="carousel-caption">
                   <h5>Crew Capsule Tour</h5>
                   <p>Experience luxury and safety in our spacecraft.</p>
                 </div>
               </div>
               <div className="carousel-item">
-                <img src="/images/crew.jpg" className="d-block w-100" alt="Train with Astronauts" />
+                <img src={crewImg} className="d-block w-100" alt="Train with Astronauts" />
                 <div className="carousel-caption">
                   <h5>Train with Astronauts</h5>
                   <p>Hands‑on training with experienced crew.</p>
