@@ -11,6 +11,7 @@ import TripList from './components/TripList';
 import TripDetail from './components/TripDetail';
 import Unauthorized from './pages/Unauthorized';
 import ProtectedRoute from './components/ProtectedRoute';
+import ManageTrips from './pages/ManageTrips';
 
 export default function App() {
   return (
@@ -32,10 +33,10 @@ export default function App() {
 
       {/* Coordinator Dashboard */}
       <Route
-        path="/coordinator"
+        path="/coordinator/manage-trips"
         element={
           <ProtectedRoute allowedRoles={['TripCoordinator']}>
-            <CoordinatorDashboard />
+            <ManageTrips /> {/* Make sure this component exists */}
           </ProtectedRoute>
         }
       />
@@ -70,6 +71,24 @@ export default function App() {
 
       {/* Catch-all */}
       <Route path="*" element={<Navigate to="/login" replace />} />
+
+      <Route
+  path="/coordinator/trips"
+  element={
+    <ProtectedRoute allowedRoles={['TripCoordinator']}>
+      <ManageTrips />
+    </ProtectedRoute>
+      }
+    />
+
+      <Route
+        path="/coordinator"
+        element={
+          <ProtectedRoute allowedRoles={['TripCoordinator']}>
+            <CoordinatorDashboard />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }

@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const guideController = require('../controllers/guideController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const { protect } = require('../middlewares/authMiddleware');
 const roleMiddleware = require('../middlewares/roleMiddleware');
 
 // All routes below are protected and for GUIDE role only
-router.use(authMiddleware, roleMiddleware('CertifiedSpaceGuide'));
+router.use(protect, roleMiddleware('CertifiedSpaceGuide'));
 
 router.get('/missions', guideController.getAssignedMissions);
 router.patch('/missions/:id/instructions', guideController.postInstructions);

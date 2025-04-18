@@ -3,13 +3,21 @@ const express = require('express');
 const router  = express.Router();
 const Trip    = require('../models/Trip');
 const Booking = require('../models/Booking');
-const { protect, isAdmin } = require('../middlewares/authMiddleware');
+const { protect } = require('../middlewares/authMiddleware');
+
+function isCoordinatorOrAdmin(req, res, next) {
+  const role = req.user.role;
+  if (role === 'Admin' || role === 'TripCoordinator') {
+    return next();
+  }
+  return res.status(403).json({ message: 'Forbidden: Admin or TripCoordinator only' });
+}
 
 // 1) CREATE a trip (protected; admin only)
 router.post(
   '/',
   protect,
-  isAdmin,
+  isCoordinatorOrAdmin,
   async (req, res) => {
     try {
       const trip = await Trip.create({
@@ -60,5 +68,27 @@ router.post(
     res.status(201).json(booking);
   }
 );
+
+// Update a trip
+router.put('/:id', protect, isCoordinatorOrAdmin, async (req, res) => {
+  try {
+    const updatedTrip = await Trip.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updatedTrip);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error updating trip' });
+  }
+});
+
+// Delete a trip
+router.delete('/:id', protect, isCoordinatorOrAdmin, async (req, res) => {
+  try {
+    await Trip.findByIdAndDelete(req.params.id);
+    res.status(204).end();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error deleting trip' });
+  }
+});
 
 module.exports = router;

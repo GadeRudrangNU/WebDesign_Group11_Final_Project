@@ -100,6 +100,7 @@ const Login = () => {
     }
     try {
       const data = await loginUser({ email, password });
+      console.log('Login response:', data);
       if (data.token && data.user) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.user.role);
@@ -114,10 +115,14 @@ const Login = () => {
           case 'Trainee': dest = '/trainer'; break;
         }
 
-        setTimeout(() => navigate(dest), 2500);
+        setTimeout(() => {
+          console.log("Navigating to:", dest);
+          navigate(dest);
+        }, 2500); //
       } else {
         setMessage(data.message || 'Login failed');
       }
+      
     } catch {
       setMessage('An error occurred during login.');
     }
