@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const bcrypt = require('bcryptjs'); 
  
 // GET /api/admin/users
 exports.getAllUsers = async (req, res) => {
@@ -42,11 +43,24 @@ exports.updateUser = async (req, res) => {
   exports.createUser = async (req, res) => {
     try {
       const { username, email, password, role } = req.body;
-      // you should bcrypt.hash(password) here or call your authController.register
-      const newUser = new User({ username, email, password, role });
+  
+      // Hash the password
+      const salt     = await bcrypt.genSalt(10);
+      const hashPass = await bcrypt.hash(password, salt);
+  
+      // Create & save
+      const newUser = new User({
+        username,
+        email,
+        password: hashPass,
+        role
+      });
       await newUser.save();
+  
+      // Strip the password before sending back
       const userSafe = newUser.toObject();
       delete userSafe.password;
+  
       res.status(201).json(userSafe);
     } catch (error) {
       console.error('Error creating user:', error);
